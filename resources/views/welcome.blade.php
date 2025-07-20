@@ -37,6 +37,21 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                <div class="flex flex-col items-center sm:items-start pt-12 sm:pt-16 bg-gradient-to-r from-blue-50 via-white to-blue-50 rounded-lg shadow-md p-8">
+                    @if (Auth::check())
+                    <h1 class="text-4xl font-extrabold text-blue-700 mb-2">
+                        Welcome, <span class="underline decoration-blue-400">{{ Auth::user()->name }}</span>!
+                    </h1>
+                    @else
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">
+                        Welcome to <span class="text-blue-600">GTI619</span>! Please log in or register.
+                    </h1>
+                    @endif
+                </div>
+            </div>
+
+        <!--
+            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
                     <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
                         <g clip-path="url(#clip0)" fill="#EF3B2D">
@@ -44,6 +59,8 @@
                         </g>
                     </svg>
                 </div>
+
+                
 
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">
@@ -127,6 +144,7 @@
                     </div>
                 </div>
             </div>
+            -->
         </div>
     </body>
 </html>
