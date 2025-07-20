@@ -19,9 +19,9 @@ Route::get('/', function () {
 });
 
 Route::resource('client', ClientController::class);
-Route::get('client/{id}/edit', 'ClientController@edit')->name('client.edit');
-Route::put('client/{id}', 'ClientController@update')->name('client.update');
-Route::delete('client/{id}', 'ClientController@destroy')->name('client.destroy');
+Route::get('client/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
+Route::put('client/{id}', [ClientController::class, 'update'])->name('client.update');
+Route::delete('client/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
 
 
 // Test routes (https://laracasts.com/series/laravel-6-from-scratch)
@@ -34,3 +34,7 @@ Route::get('/test', function () {
 });
 
 Route::get('/posts/{post}', [PostController::class, 'show']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
