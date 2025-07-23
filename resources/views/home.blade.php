@@ -15,6 +15,12 @@
                     @endif
 
                     You are logged in, {{ Auth::user()->name }}!
+
+                    <div class="mt-3">
+                        <a href="{{ url('/home/client') }}" class="btn btn-primary">
+                            Go to Clients
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

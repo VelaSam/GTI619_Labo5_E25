@@ -12,11 +12,12 @@
    <p>{{$message}}</p>
   </div>
   @endif
-  <div align="right">
-   <a href="{{route('client.create')}}" class="btn btn-primary">Add</a>
-   <br />
-   <br />
+
+  <div class="d-flex justify-content-between mb-3">
+    <a href="{{ url('/home') }}" class="btn btn-secondary">Back to Home</a>
+    <a href="{{ route('client.create') }}" class="btn btn-primary">Add</a>
   </div>
+
   <table class="table table-bordered table-striped">
    <tr>
     <th>First Name</th>

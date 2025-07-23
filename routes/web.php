@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PostController;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,23 +20,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('client', ClientController::class);
-Route::get('client/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
-Route::put('client/{id}', [ClientController::class, 'update'])->name('client.update');
-Route::delete('client/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
-
-
-// Test routes (https://laracasts.com/series/laravel-6-from-scratch)
-Route::get('/test', function () {
-    $name = request('name');
-
-    return view('test', [
-        'name' => $name
-    ]);
-});
-
-Route::get('/posts/{post}', [PostController::class, 'show']);
-
+// Auth routes (login, register, etc.)
 Auth::routes();
 
+// Home route
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Group all /home/client routes and protect with auth middleware
+Route::middleware('auth')->prefix('home')->group(function () {
+    // All client routes now start with /home/client
+    Route::resource('client', ClientController::class);
+
+    // These are already included in the resource route, but can be defined explicitly if needed
+    Route::get('client/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
+    Route::put('client/{id}', [ClientController::class, 'update'])->name('client.update');
+    Route::delete('client/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
+});
