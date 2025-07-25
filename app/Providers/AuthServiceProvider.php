@@ -24,7 +24,21 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        
+        Gate::define('view_page_prep_residentiels', function ($user) {
+        return $user->hasRole('Préposé aux clients résidentiels');
+        });
 
+        Gate::define('view_page_prep_affaire', function ($user) {
+            return $user->hasRole('Préposé aux clients d’affaire');
+        });
+
+        
+        Gate::before(function ($user, $ability) {
+            if ($user->hasRole('Administrateur')) {
+                return true;
+            }
+        });
         //
     }
 }

@@ -16,6 +16,28 @@
 
                     You are logged in, {{ Auth::user()->name }}!
 
+                    @can ('view_admin_page')
+                        <div class="mt-3">
+                            <a href="{{ url('/home/client') }}" class="btn btn-primary">
+                                Options Admin
+                            </a>
+                        </div>
+                    @endcan
+
+                    @can ('view_page_prep_residentiels')
+                        <div class="mt-3">
+                            <a href="{{ url('/home/client') }}" class="btn btn-primary">
+                                Clients résidentiels
+                            </a>
+                        </div>
+                    @endcan
+                    @can ('view_page_prep_affaire')
+                        <div class="mt-3">
+                            <a href="{{ url('/home/client') }}" class="btn btn-primary">
+                                Clients d'affaire
+                            </a>
+                        </div>
+                    @endcan
                     <div class="mt-3">
                         <a href="{{ url('/home/client') }}" class="btn btn-primary">
                             Go to Clients
