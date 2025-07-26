@@ -35,4 +35,9 @@ Route::middleware('auth')->prefix('home')->group(function () {
     Route::get('client/{id}/edit', [ClientController::class, 'edit'])->name('client.edit');
     Route::put('client/{id}', [ClientController::class, 'update'])->name('client.update');
     Route::delete('client/{id}', [ClientController::class, 'destroy'])->name('client.destroy');
+
 });
+
+Route::get('/adminOptions',function(){return view('admin');})->middleware('can:view_page_admin');
+
+

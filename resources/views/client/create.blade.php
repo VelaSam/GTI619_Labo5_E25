@@ -30,6 +30,23 @@
         <input type="text" name="last_name" class="form-control" placeholder="Enter Last Name" />
     </div>
     <div class="form-group">
+        @can ('view_page_admin')
+            <input type="radio"  name="type" value="residentiel" id="radioResidentiel" />
+            <label for="radioResidentiel">Client résidentiel</label>
+            <input type="radio"  name="type" value="affaire" id="radioAffaire" />
+            <label for="radioAffaire">Client d'affaire</label>
+        @endcan
+
+        @can ('view_page_prep_residentiels')
+            <input type="radio" name="type" value="residentiel" checked hidden />
+        @endcan
+
+        @can ('view_page_prep_affaire')
+            <input type="radio" name="type" value="affaire" checked hidden />
+        @endcan
+        
+    </div>
+    <div class="form-group">
         <input type="submit" class="btn btn-primary" />
     </div>
     </form>

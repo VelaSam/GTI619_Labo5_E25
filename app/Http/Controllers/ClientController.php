@@ -14,7 +14,15 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all()->toArray();
+        $user = auth()->user();
+
+        if ($user->can('view_page_admin')) {
+            $clients = Client::all();
+        } elseif ($user->can('view_page_prep_affaire')) {
+            $clients = Client::where('type', 'affaire')->get();
+        } elseif ($user->can('view_page_prep_residentiels')) {
+             $clients = Client::where('type', 'residentiel')->get();
+        }
         return view('client.index', compact('clients'));
     }
 
@@ -37,11 +45,13 @@ class ClientController extends Controller
     public function store(Request $request)
     { $this->validate($request, [
         'first_name'    =>  'required',
-        'last_name'     =>  'required'
+        'last_name'     =>  'required',
+        'type'       => 'required'
     ]);
     $client = new client([
         'first_name'    =>  $request->get('first_name'),
-        'last_name'     =>  $request->get('last_name')
+        'last_name'     =>  $request->get('last_name'),
+        'type'       => $request->get('type')
     ]);
     $client->save();
     return redirect()->route('client.index')->with('success', 'Client ajouté');

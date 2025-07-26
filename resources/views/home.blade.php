@@ -16,33 +16,36 @@
 
                     You are logged in, {{ Auth::user()->name }}!
 
-                    @can ('view_admin_page')
+                    @can ('view_page_admin')
                         <div class="mt-3">
-                            <a href="{{ url('/home/client') }}" class="btn btn-primary">
+                            <a href="{{ url('/adminOptions') }}" class="btn btn-primary">
                                 Options Admin
                             </a>
                         </div>
                     @endcan
-
-                    @can ('view_page_prep_residentiels')
+                    @can('view_page_admin')
                         <div class="mt-3">
                             <a href="{{ url('/home/client') }}" class="btn btn-primary">
-                                Clients résidentiels
+                                Clients
                             </a>
                         </div>
+                    @else
+                        @can ('view_page_prep_residentiels')
+                            <div class="mt-3">
+                                <a href="{{ url('/home/client') }}" class="btn btn-primary">
+                                    Clients résidentiels
+                                </a>
+                            </div>
+                        @endcan
+                        @can ('view_page_prep_affaire')
+                            <div class="mt-3">
+                                <a href="{{ url('/home/client') }}" class="btn btn-primary">
+                                    Clients d'affaire
+                                </a>
+                            </div>
+                        @endcan
                     @endcan
-                    @can ('view_page_prep_affaire')
-                        <div class="mt-3">
-                            <a href="{{ url('/home/client') }}" class="btn btn-primary">
-                                Clients d'affaire
-                            </a>
-                        </div>
-                    @endcan
-                    <div class="mt-3">
-                        <a href="{{ url('/home/client') }}" class="btn btn-primary">
-                            Go to Clients
-                        </a>
-                    </div>
+                    
                 </div>
             </div>
         </div>
