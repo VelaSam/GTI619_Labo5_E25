@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -23,7 +24,8 @@ class AuthController extends Controller
     $user->password = Hash::make($validated['password']);
     $user->save();
 
-    return redirect()->route('login')->with('success', 'Password has been reset.');
-    }
+    Auth::login($user);
+
+    return redirect()->route('home')->with('success', 'Password reset and logged in successfully.');    }
     
 }
