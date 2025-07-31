@@ -14,6 +14,14 @@
                         </div>
                     @endif
 
+                    <form method="POST" action="{{ route('admin.update.passTime', ) }}">
+                        @csrf
+                        
+                        <label>Intervalle de temps avec password reset (en minutes):</label>
+                        <input type="number" name="interval_minutes" min="1">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+
                     
                 </div>
             </div>
@@ -31,7 +39,7 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Ajouter un utilisateur') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ url('/adminRegister') }}">
@@ -101,7 +109,7 @@
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Ajouter') }}
                                 </button>
                             </div>
                         </div>

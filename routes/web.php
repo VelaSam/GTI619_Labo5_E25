@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -46,3 +47,5 @@ Route::post('/adminRegister',[UserController::class, 'store'])->middleware('can:
 
 Route::get('/reset-password', [AuthController::class, 'show'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'reset'])->name('password.reset.submit');
+
+Route::post('/passSettings', [PasswordController::class, 'reset'])->name('admin.update.passTime');
