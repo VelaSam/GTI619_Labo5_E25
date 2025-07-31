@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -40,6 +41,8 @@ Route::middleware('auth')->prefix('home')->group(function () {
 });
 
 Route::get('/adminOptions',function(){return view('admin');})->middleware('can:view_page_admin');
+
 Route::post('/adminRegister',[UserController::class, 'store'])->middleware('can:view_page_admin');
 
-
+Route::get('/reset-password', [AuthController::class, 'show'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'reset'])->name('password.reset.submit');
