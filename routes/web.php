@@ -41,9 +41,13 @@ Route::middleware('auth')->prefix('home')->group(function () {
 
 });
 
-Route::get('/adminOptions',function(){return view('admin');})->middleware('can:view_page_admin');
+Route::get('/adminOptions', function () {
+    return view('admin'); })->middleware('can:view_page_admin');
 
-Route::post('/adminRegister',[UserController::class, 'store'])->middleware('can:view_page_admin');
+Route::post('/adminRegister', [UserController::class, 'store'])->middleware('can:view_page_admin');
+
+Route::get('/security', [App\Http\Controllers\SecurityController::class, 'index'])->name('security.index')->middleware('can:view_page_admin');
+Route::put('/security', [App\Http\Controllers\SecurityController::class, 'update'])->name('security.update')->middleware('can:view_page_admin');
 
 Route::get('/reset-password', [AuthController::class, 'show'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'reset'])->name('password.reset.submit');
