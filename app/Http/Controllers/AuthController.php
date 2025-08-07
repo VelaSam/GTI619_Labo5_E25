@@ -24,6 +24,11 @@ class AuthController extends Controller
 
         $user = \App\Models\User::where('email', $validated['email'])->first();
 
+        $complexityErrors = \App\Models\User::validatePasswordComplexity($validated['password']);
+        if (!empty($complexityErrors)) {
+            return back()->withErrors(['password' => implode(' ', $complexityErrors)]);
+        }
+
         if (\App\Models\PasswordHistory::isPasswordInHistory($user->id, $validated['password'])) {
             SecurityLog::logPasswordChange($user->id, false);
 

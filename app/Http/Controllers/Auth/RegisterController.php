@@ -64,10 +64,31 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        \App\Models\PasswordHistory::addPassword($user->id, $data['password']);
+
+        return $user;
+    }
+
+    public function register(\Illuminate\Http\Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $complexityErrors = User::validatePasswordComplexity($request->password);
+        if (!empty($complexityErrors)) {
+            return back()->withErrors(['password' => implode(' ', $complexityErrors)]);
+        }
+
+        $user = $this->create($request->all());
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 }

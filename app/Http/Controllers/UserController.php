@@ -17,6 +17,11 @@ class UserController extends Controller
         ]);
 
         try {
+            $complexityErrors = \App\Models\User::validatePasswordComplexity($validated['password']);
+            if (!empty($complexityErrors)) {
+                return back()->withErrors(['password' => implode(' ', $complexityErrors)]);
+            }
+
             $user = \App\Models\User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],

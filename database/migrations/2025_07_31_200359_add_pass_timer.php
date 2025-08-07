@@ -16,6 +16,11 @@ class AddPassTimer extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->integer('password_expires_in_days')->nullable();
             $table->integer('password_history_limit')->default(5);
+            $table->integer('password_min_length')->default(12);
+            $table->boolean('password_require_lowercase')->default(true);
+            $table->boolean('password_require_uppercase')->default(true);
+            $table->boolean('password_require_digit')->default(true);
+            $table->boolean('password_require_special')->default(true);
         });
     }
 

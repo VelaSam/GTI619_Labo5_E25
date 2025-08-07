@@ -35,6 +35,41 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="password_min_length" class="col-md-4 col-form-label text-md-end">Longueur
+                                    minimale du mot de passe:</label>
+                                <div class="col-md-6">
+                                    <input type="number" name="password_min_length" min="1" max="50" class="form-control"
+                                        value="{{ old('password_min_length', 12) }}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-md-4 col-form-label text-md-end">Exigences de complexité:</label>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="password_require_lowercase" class="form-check-input"
+                                            value="1" checked>
+                                        <label class="form-check-label">Lettre minuscule</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="password_require_uppercase" class="form-check-input"
+                                            value="1" checked>
+                                        <label class="form-check-label">Lettre majuscule</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="password_require_digit" class="form-check-input"
+                                            value="1" checked>
+                                        <label class="form-check-label">Chiffre</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="password_require_special" class="form-check-input"
+                                            value="1" checked>
+                                        <label class="form-check-label">Caractère spécial</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">Save</button>
@@ -46,7 +81,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header">{{ __('Options configuration du changement de mot de passe') }}</div>
+                    <div class="card-header">{{ __('Journalisation') }}</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -56,7 +91,7 @@
                         @endif
 
                         <a href="{{ route('security-logs.index') }}" class="btn btn-info">
-                            {{ __('View Security Logs') }}
+                            {{ __('Voir les logs de sécurité') }}
                         </a>
                     </div>
                 </div>
@@ -112,6 +147,8 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+
+                                    @include('components.password-requirements')
                                 </div>
                             </div>
 
