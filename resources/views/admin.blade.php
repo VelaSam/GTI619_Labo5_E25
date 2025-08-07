@@ -55,7 +55,9 @@
                             </div>
                         @endif
 
-
+                        <a href="{{ route('security-logs.index') }}" class="btn btn-info">
+                            {{ __('View Security Logs') }}
+                        </a>
                     </div>
                 </div>
                 <div class="card">

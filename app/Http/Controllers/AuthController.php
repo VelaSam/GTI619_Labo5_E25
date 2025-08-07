@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\SecurityLog;
 
 class AuthController extends Controller
 {
@@ -24,22 +25,34 @@ class AuthController extends Controller
         $user = \App\Models\User::where('email', $validated['email'])->first();
 
         if (\App\Models\PasswordHistory::isPasswordInHistory($user->id, $validated['password'])) {
+            SecurityLog::logPasswordChange($user->id, false);
+
             return back()->withErrors([
                 'password' => 'You cannot reuse one of your previous passwords.',
             ]);
         }
 
-        $user->password = Hash::make($validated['password']);
-        $user->password_changed_at = now();
-        $user->save();
+        try {
+            $user->password = Hash::make($validated['password']);
+            $user->password_changed_at = now();
+            $user->save();
 
-        \App\Models\PasswordHistory::addPassword($user->id, $validated['password']);
+            \App\Models\PasswordHistory::addPassword($user->id, $validated['password']);
 
-        \App\Models\PasswordHistory::cleanupOldPasswords($user->id, $user->getPasswordHistoryLimit());
+            \App\Models\PasswordHistory::cleanupOldPasswords($user->id, $user->getPasswordHistoryLimit());
 
-        Auth::login($user);
+            SecurityLog::logPasswordChange($user->id, true);
 
-        return redirect()->route('home')->with('success', 'Password reset and logged in successfully.');
+            Auth::login($user);
+
+            return redirect()->route('home')->with('success', 'Password reset and logged in successfully.');
+        } catch (\Exception $e) {
+            SecurityLog::logPasswordChange($user->id, false);
+
+            return back()->withErrors([
+                'password' => 'An error occurred while changing your password.',
+            ]);
+        }
     }
 
 }

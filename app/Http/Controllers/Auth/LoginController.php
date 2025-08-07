@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Models\SecurityLog;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -43,9 +45,10 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        SecurityLog::logLoginAttempt($user->email, true);
+
         $expiresInMinutes = $user->password_expires_in_days;
 
-        
         if ($user->password_changed_at && $expiresInMinutes) {
             $expired = now()->diffInMinutes($user->password_changed_at) > $expiresInMinutes;
 
@@ -56,5 +59,14 @@ class LoginController extends Controller
                 ]);
             }
         }
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        SecurityLog::logLoginAttempt($request->email, false);
+
+        throw ValidationException::withMessages([
+            'email' => [trans('auth.failed')],
+        ]);
     }
 }

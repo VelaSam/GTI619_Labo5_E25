@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\SecurityLog;
 
 class UserController extends Controller
 {
@@ -15,16 +16,22 @@ class UserController extends Controller
             'role' => ['required', 'string', 'in:Administrateur,Préposé aux clients résidentiels,Préposé aux clients d\'affaire'],
         ]);
 
-        $user = \App\Models\User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-        ]);
+        try {
+            $user = \App\Models\User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => bcrypt($validated['password']),
+            ]);
 
-        $user->assignRole($validated['role']);
+            $user->assignRole($validated['role']);
 
-        \App\Models\PasswordHistory::addPassword($user->id, $validated['password']);
+            \App\Models\PasswordHistory::addPassword($user->id, $validated['password']);
 
-        return redirect('/adminOptions')->with('success', 'User created.');
+            SecurityLog::logPasswordChange($user->id, true);
+
+            return redirect('/adminOptions')->with('success', 'User created.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['email' => 'An error occurred while creating the user.']);
+        }
     }
 }

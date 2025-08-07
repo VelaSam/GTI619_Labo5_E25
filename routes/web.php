@@ -41,11 +41,14 @@ Route::middleware('auth')->prefix('home')->group(function () {
 
 });
 
-Route::get('/adminOptions',function(){return view('admin');})->middleware('can:view_page_admin');
+Route::get('/adminOptions', function () {
+    return view('admin'); })->middleware('can:view_page_admin');
 
-Route::post('/adminRegister',[UserController::class, 'store'])->middleware('can:view_page_admin');
+Route::post('/adminRegister', [UserController::class, 'store'])->middleware('can:view_page_admin');
 
 Route::get('/reset-password', [AuthController::class, 'show'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'reset'])->name('password.reset.submit');
 
 Route::post('/passSettings', [PasswordController::class, 'reset'])->name('admin.update.passTime');
+
+Route::get('/security-logs', [App\Http\Controllers\SecurityLogController::class, 'index'])->name('security-logs.index')->middleware('can:view_page_admin');
