@@ -23,7 +23,6 @@ class AuthController extends Controller
 
         $user = \App\Models\User::where('email', $validated['email'])->first();
 
-    $user->save();
         if (\App\Models\PasswordHistory::isPasswordInHistory($user->id, $validated['password'])) {
             return back()->withErrors([
                 'password' => 'You cannot reuse one of your previous passwords.',
