@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'password_history_limit',
     ];
 
     /**
@@ -42,24 +43,32 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function roles(){
+    public function roles()
+    {
         return $this->belongsToMany(Role::class)->withTimestamps();
     }
 
-    public function assignRole($role){
+    public function assignRole($role)
+    {
 
-        if(is_string($role)){
-            $role =Role::whereName($role)->firstOrFail();
+        if (is_string($role)) {
+            $role = Role::whereName($role)->firstOrFail();
         }
         $this->roles()->save($role);
 
     }
 
     public function hasRole($roleName)
-{
-    return $this->roles()->where('name', $roleName)->exists();
-}
-    public function permissions(){
+    {
+        return $this->roles()->where('name', $roleName)->exists();
+    }
+    public function permissions()
+    {
         return $this->roles->map->permissions->flatten()->pluck('name')->unique();
+    }
+
+    public function getPasswordHistoryLimit()
+    {
+        return $this->password_history_limit ?? 5;
     }
 }

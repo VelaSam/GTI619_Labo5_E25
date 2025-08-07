@@ -15,6 +15,7 @@ class AddPassTimer extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->integer('password_expires_in_days')->nullable();
+            $table->integer('password_history_limit')->default(5);
         });
     }
 
